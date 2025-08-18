@@ -8,10 +8,9 @@ import base64
 
 app = FastAPI()
 
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], 
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -21,31 +20,32 @@ app.add_middleware(
 def read_root():
     return {"status": "Backend running!"}
 
+def home():
+    return {"message": "Pipe Detection Backend is running!"}
 
 @app.post("/process_image")
 async def process_image(
     file: UploadFile = File(...),
     conf_threshold: float = Form(0.25)
 ):
-    
     contents = await file.read()
     npimg = np.frombuffer(contents, np.uint8)
     image = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
 
-    
+    # Run detection
     result_data = detect_and_count(image, conf_threshold=conf_threshold)
 
-    
+    # Get YOLO model and generate annotated image
     model = get_model()
     results = model(image, conf=conf_threshold)
     annotated_image = results[0].plot()
 
-    
-    _, buffer = cv2.imencode('.jpg', annotated_image)
+    # Convert to base64 for frontend
+    _, buffer = cv2.imencode(".jpg", annotated_image)
     img_base64 = base64.b64encode(buffer).decode("utf-8")
 
     return {
         "diameter_counts": result_data["diameter_counts"],
         "color_counts": result_data["color_counts"],
-        "annotated_image": img_base64
+        "annotated_image": img_base64,
     }
