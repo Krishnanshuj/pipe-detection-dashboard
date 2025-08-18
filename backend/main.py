@@ -18,6 +18,9 @@ app.add_middleware(
 )
 
 @app.get("/")
+def read_root():
+    return {"status": "Backend running!"}
+
 def home():
     return {"message": "Pipe Detection Backend is running!"}
 
