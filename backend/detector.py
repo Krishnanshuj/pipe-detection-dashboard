@@ -11,7 +11,7 @@ _model = None
 def get_model():
     global _model
     if _model is None:
-        _model = YOLO("C:\Users\krish\Downloads\pipe-detection-dashboard\backend\models\best.pt")
+        _model = YOLO(MODEL_PATH)
     return _model
 
 PIPE_CLASSES = ["pipe1", "pipe2", "pipe3", "pipe4", "pipe5"]
