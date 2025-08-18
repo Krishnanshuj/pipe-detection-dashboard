@@ -10,7 +10,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],   # only once
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -47,5 +47,5 @@ async def process_image(
     return {
         "diameter_counts": result_data["diameter_counts"],
         "color_counts": result_data["color_counts"],
-        "annotated_image": img_base64,
+        "annotated_image": img_base64
     }
