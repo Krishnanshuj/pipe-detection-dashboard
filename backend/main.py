@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
-from backend.detector import detect_and_count 
+from detector import detect_and_count
+ 
 import cv2
 import numpy as np
 import base64
@@ -10,11 +11,16 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"], 
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/")
+def home():
+    return {"message": "Pipe Detection Backend is running!"}
+
 
 @app.post("/process_image")
 async def process_image(
@@ -29,7 +35,7 @@ async def process_image(
     result_data = detect_and_count(image, conf_threshold=conf_threshold)
 
    
-    from backend.detector import model  
+    from backend import model  
     results = model(image, conf=conf_threshold)
     annotated_image = results[0].plot()
 
