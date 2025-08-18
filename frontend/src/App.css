@@ -1,0 +1,118 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f8;
+  color: #333;
+}
+
+
+.App {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+
+.App-header {
+  text-align: center;
+  padding: 20px;
+  background: #2c3e50;
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 25px;
+}
+
+.App-header h1 {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.upload-section {
+  margin-top: 15px;
+}
+
+input[type="file"] {
+  background: white;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+}
+
+button {
+  background-color: #3498db;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+
+.detected-section {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom: 30px;
+}
+
+.detected-section img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.chart-container {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.pie-chart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slider-container {
+  margin-top: 15px;
+  text-align: left;
+}
+
+.slider-container label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.slider-container input[type="range"] {
+  width: 100%;
+  cursor: pointer;
+}
+
+
+@media (max-width: 768px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
