@@ -6,7 +6,13 @@ from ultralytics import YOLO
 
 
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "models", "best.pt")
-model = YOLO(MODEL_PATH)
+_model = None 
+
+def get_model():
+    global _model
+    if _model is None:
+        _model = YOLO(MODEL_PATH)
+    return _model
 
 PIPE_CLASSES = ["pipe1", "pipe2", "pipe3", "pipe4", "pipe5"]
 
@@ -38,6 +44,7 @@ def classify_color_from_rgb(rgb_color):
     return "unknown"
 
 def detect_and_count(image, conf_threshold=0.25):
+    model = get_model()
     results = model(image, conf=conf_threshold)[0]  
 
     diameter_counts = {cls: 0 for cls in PIPE_CLASSES}
