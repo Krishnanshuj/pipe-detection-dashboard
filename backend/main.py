@@ -1,6 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
-from backend.detector import detect_and_count
+from detector import detect_and_count
  
 import cv2
 import numpy as np
