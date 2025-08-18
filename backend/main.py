@@ -37,9 +37,10 @@ async def process_image(
   
     result_data = detect_and_count(image, conf_threshold=conf_threshold)
 
-   
-    from backend import model  
+    from detector import get_model
+    model = get_model()
     results = model(image, conf=conf_threshold)
+
     annotated_image = results[0].plot()
 
     
