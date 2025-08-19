@@ -10,7 +10,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],   # only once
+    allow_origins=["*"],   
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -32,15 +32,15 @@ async def process_image(
     npimg = np.frombuffer(contents, np.uint8)
     image = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
 
-    # Run detection
+    
     result_data = detect_and_count(image, conf_threshold=conf_threshold)
 
-    # Get YOLO model and generate annotated image
+    
     model = get_model()
     results = model(image, conf=conf_threshold)
     annotated_image = results[0].plot()
 
-    # Convert to base64 for frontend
+    
     _, buffer = cv2.imencode(".jpg", annotated_image)
     img_base64 = base64.b64encode(buffer).decode("utf-8")
 
