@@ -3,7 +3,7 @@ export const uploadImage = async (file, confidence) => {
   formData.append("file", file);
   formData.append("conf_threshold", confidence); 
 
-  const response = await fetch("https://pipe-detection-dashboard.onrender.com/upload", {
+  const response = await fetch("https://pipe-detection-dashboard.onrender.com/process_image", {
     method: "POST",
     body: formData,
   });
