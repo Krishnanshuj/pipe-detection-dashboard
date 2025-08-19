@@ -10,10 +10,8 @@ _model = None
 def get_model():
     global _model
     if _model is None:
-        
         _model = YOLO(MODEL_PATH)
     return _model
-
 
 PIPE_CLASSES = ["pipe1", "pipe2", "pipe3", "pipe4", "pipe5"]
 
@@ -28,17 +26,19 @@ COLOR_RANGES = {
 }
 
 def detect_dominant_color(image):
-    """Fast average color detection instead of KMeans."""
+    """Fast average color detection (downsampled)."""
     
     if image.shape[0] > 50 or image.shape[1] > 50:
         image = cv2.resize(image, (50, 50))
-
-    avg_color = image.mean(axis=(0, 1)).astype(int)  
+    
+    avg_color = image.mean(axis=(0, 1)).astype(int)
     return tuple(avg_color)
 
 def classify_color_from_bgr(bgr_color):
-    """Classify pipe color based on average BGR."""
-    hsv_color = cv2.cvtColor(np.uint8([[bgr_color]]), cv2.COLOR_BGR2HSV)[0][0]
+    """Convert avg BGR to HSV and classify based on thresholds."""
+    hsv_color = cv2.cvtColor(
+        np.uint8([[bgr_color]]), cv2.COLOR_BGR2HSV
+    )[0][0]
     for color_name, (lower, upper) in COLOR_RANGES.items():
         if all(lower[i] <= hsv_color[i] <= upper[i] for i in range(3)):
             return color_name
@@ -48,7 +48,13 @@ def detect_and_count(image, conf_threshold=0.25):
     """Run YOLO detection and count pipes by diameter & color."""
     model = get_model()
     
-    results = model.predict(image, conf=conf_threshold, imgsz=256, device="cpu")[0]
+    results = model.predict(
+        image, 
+        conf=conf_threshold, 
+        imgsz=224,      
+        device="cpu",
+        max_det=100     
+    )[0]
 
     diameter_counts = {cls: 0 for cls in PIPE_CLASSES}
     color_counts = {}
@@ -76,4 +82,5 @@ def detect_and_count(image, conf_threshold=0.25):
         "diameter_counts": diameter_counts,
         "color_counts": color_counts
     }
+
 
