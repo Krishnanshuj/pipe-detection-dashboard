@@ -30,14 +30,14 @@ async def process_image(
 ):
     contents = await file.read()
     npimg = np.frombuffer(contents, np.uint8)
-    image = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
+    image = cv2.resize(image, (320, 320))
 
     
     result_data = detect_and_count(image, conf_threshold=conf_threshold)
 
     
     model = get_model()
-    results = model.predict(image, conf=conf_threshold,imgsz=320)
+    results = model.predict(image, conf=conf_threshold,imgsz=256,device="cpu")
     annotated_image = results[0].plot()
 
     
