@@ -28,8 +28,12 @@ async def process_image(
     file: UploadFile = File(...),
     conf_threshold: float = Form(0.25)
 ):
+    
     contents = await file.read()
     npimg = np.frombuffer(contents, np.uint8)
+    image = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
+
+
     image = cv2.resize(image, (320, 320))
 
     
@@ -37,11 +41,12 @@ async def process_image(
 
     
     model = get_model()
-    results = model.predict(image, conf=conf_threshold,imgsz=256,device="cpu")
+    results = model.predict(image, conf=conf_threshold, imgsz=320, device="cpu")
     annotated_image = results[0].plot()
 
     
-    _, buffer = cv2.imencode(".jpg", annotated_image)
+    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 70]
+    _, buffer = cv2.imencode(".jpg", annotated_image, encode_param)
     img_base64 = base64.b64encode(buffer).decode("utf-8")
 
     return {
