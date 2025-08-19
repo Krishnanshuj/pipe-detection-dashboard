@@ -9,7 +9,8 @@ export const uploadImage = async (file, confidence) => {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to upload image");
+    const errorText = await response.text();
+    throw new Error(`Failed to upload image: ${errorText}`);
   }
 
   return await response.json();
