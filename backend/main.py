@@ -37,7 +37,7 @@ async def process_image(
 
     
     model = get_model()
-    results = model(image, conf=conf_threshold)
+    results = model(image, conf=conf_threshold,imgsz=320)
     annotated_image = results[0].plot()
 
     
